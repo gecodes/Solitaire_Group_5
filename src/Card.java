@@ -106,19 +106,19 @@ public class Card {
     try {
       switch (suit) {
       case "S":
-        suitImg = ImageIO.read(new File("images/spade.png"));
+        suitImg = ImageIO.read(new File("resources/spade.png"));
         color   = Color.black;
         break;
       case "H":
-        suitImg = ImageIO.read(new File("images/heart.png"));
+        suitImg = ImageIO.read(new File("resources/heart.png"));
         color   = Color.red;
         break;
       case "D":
-        suitImg = ImageIO.read(new File("images/diamond.png"));
+        suitImg = ImageIO.read(new File("resources/diamond.png"));
         color   = Color.red;
         break;
       case "C":
-        suitImg = ImageIO.read(new File("images/club.png"));
+        suitImg = ImageIO.read(new File("resources/club.png"));
         color   = Color.black;
         break;
       default: // should be impossible
