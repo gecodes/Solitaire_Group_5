@@ -4,14 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Card.java
- * A card has a suit (spade, heart, diamond, club) and a face (ace, 2, 3, ..., 10, Jack, Queen, King).
- * This class provides methods for drawing and constructing a card.
- *
- * @author  Jake Wilson
- * @version Mar 15, 2014
- */
 public class Card {
   
   private String suit;
@@ -28,42 +20,25 @@ public class Card {
   
   public static final int HEIGHT = 100, WIDTH = 60;
   
-  /**
-   * All possible suits a card may have
-   */
+  // Define the four suits
   public static final String[] SUITS = {"S", "H", "D", "C"};
   
-  /**
-   * All possible face values a card may have
-   */
+  // Define all face values
   public static final String[] FACES = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
   
   public boolean faceDown;
   
-  /**
-   * No-arg constructor that initializes the card to the Ace of Spades
-   */
+  // No-arg constructor that initializes the card to the Ace of Spades
   public Card() {
     this("A", "S");
   }
   
-  /**
-   * Constructor that suits the card suit to s and the card face to f and the location to (0, 0)
-   * @param s the suit of the card
-   * @param f the face of the card
-   */
+  // Constructor that suits the card suit to s and the card face to f and the location to (0, 0)
   public Card(String s, String f) {
     this(s, f, 0, 0);
   }
   
-  /**
-   * Constructor that initializes all variables to passed in parameters
-   * 
-   * @param f the face of the card
-   * @param s the suit of the card
-   * @param x the top-left x coordinate of the card
-   * @param y the top-left y coordinate of the card
-   */
+  // Constructor that initializes all variables to passed in parameters
   public Card(String f, String s, int x, int y) {
     setFace(f);
     setSuit(s);
@@ -75,32 +50,28 @@ public class Card {
     font = new Font("Courier New", Font.BOLD, 20);
   }
   
-  /**
-   * Draws the card to a graphics context
-   * @param g the graphics context to draw the card on
-   */
+  // Graphically define the card, front and back
   public void draw(Graphics g) {
+
     if (!faceDown) {
+      // Card back
       g.setColor(Color.white);
       g.fillRect(cornerX, cornerY, WIDTH, HEIGHT);
-      //g.fillRoundRect(cornerX, cornerY, WIDTH, HEIGHT, 10, 10);
       g.setColor(color);
       g.setFont(font);
       g.drawString(face  , cornerX + 3, cornerY + 20);
       g.drawImage(suitImg, cornerX + 6, cornerY + 26, null);
-    } else { // draw the back of the card
+    } else {
+
+      // Card back
       g.setColor(new Color(156, 14, 23));
       g.fillRect(cornerX, cornerY, WIDTH, HEIGHT);
-      //g.fillRoundRect(cornerX, cornerY, WIDTH, HEIGHT, 10, 10);
     }
     g.setColor(Color.black);
-    g.drawRoundRect(cornerX, cornerY, WIDTH, HEIGHT, 10, 10);
+    g.drawRect(cornerX, cornerY, WIDTH, HEIGHT);
   }
   
-  /**
-   * Initializes the suit and face images of the card depending on what suit and face the card is
-   * @return whether the image initialization was successful
-   */
+  // Initializes the suit and face images of the card depending on what suit and face the card is
   private boolean initImage() {
     boolean success = true;
     try {

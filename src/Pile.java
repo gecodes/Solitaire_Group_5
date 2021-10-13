@@ -2,20 +2,14 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+ // This class represents a pile of cards in solitaire. Unlike the deck, a pile does not
+ // necessarily contain 52 cards, it can hold anywhere from 0 to 52 cards. Piles can have cards
+ // added and removed at runtime.
+ //
+ // Note: the Pile class does not care how or in what order cards are added. The CardListener class
+ // is responsible for ensuring that cards are added to piles in red black red black order and that
+ // the faces are descending.
 
-/**
- * Pile.java
- * This class represents a pile of cards in solitaire. Unlike the deck, a pile does not
- * necessarily contain 52 cards, it can hold anywhere from 0 to 52 cards. Piles can have cards
- * added and removed at runtime.
- * 
- * Note: the Pile class does not care how or in what order cards are added. The CardListener class
- * is responsible for ensuring that cards are added to piles in red black red black order and that
- * the faces are descending.
- *
- * @author  Jake Wilson
- * @version Mar 17, 2014
- */
 public class Pile {
   
   private ArrayList<Card> pile;
@@ -35,49 +29,32 @@ public class Pile {
   // The integer representation of the type of pile. (foundation, tableau, temp, stockpile)
   private int type;
   
-  /**
-   * The x and y locations of the pile. Though these are not final, they should NEVER change
-   */
+  // The x and y locations of the pile. Though these are not final, they should NEVER change
   private int xLoc, yLoc;
   
-  /**
-   * The width of the pile. It will always be the width of a card
-   */
+  // The width of the pile. It will always be the width of a card
   private int width;
   
-  /**
-   * The height of a pile. It will change as cards are added to the pile
-   */
+  // The height of a pile. It will change as cards are added to the pile
   private int height;
   
-  /**
-   * Vertical displacement between cards in a pile. This only applies for cards in a TABLEAU_PILE or TEMP_PILE
-   */
+  // Vertical displacement between cards in a pile. This only applies for cards in a TABLEAU_PILE or TEMP_PILE
   public static final int VERT_DISPL = 20;
   
-  /**
-   * Horizontal displacement between cards. This only applies for cards in a STOCKPILE
-   */
+  // Horizontal displacement between cards. This only applies for cards in a STOCKPILE
   public static final int HORI_DISPL = 26;
   
-  /**
-   * The top 3 cards in a deck pile. This is necessary because a maximum of three cards can
-   * be drawn in a deck pile. Also, if one card is removed, we must draw two, not three.
-   */
+
+  // The top 3 cards in a deck pile. This is necessary because a maximum of three cards can
+  // be drawn in a deck pile. Also, if one card is removed, we must draw two, not three.
   private Card[] top3;
-  
-  /**
-   * No-arg constructor that sets the piles coordinates to (0,0) and sets the pile type to TABLEAU_PILE
-   */
+
+  // No-arg constructor that sets the piles coordinates to (0,0) and sets the pile type to TABLEAU_PILE
   public Pile() {
     this(0, 0, TEMP_PILE);
   }
-  
-  /**
-   * Constructs a new pile of cards with an x location and a y location of (x,y)
-   * @param x the x location of the pile
-   * @param y the y location of the pile
-   */
+
+  // Constructs a new pile of cards with an x location and a y location of (x,y)
   public Pile(int x, int y, int t) {
     pile   = new ArrayList<Card>();
     xLoc   = x;
@@ -91,15 +68,12 @@ public class Pile {
     // the top 3 are only used by STOCKPILE's
     top3 = (type == STOCKPILE) ? new Card[3] : null;
   }
-  
-  /**
-   * Draws the pile of cards
-   * @param g the graphics context to draw on
-   */
+
+  // Draws the pile of cards
   public void draw(Graphics g) {
     if (pile.size() == 0 && type != STOCKPILE) {
       g.setColor(Color.white);
-      g.drawRoundRect(xLoc, yLoc, Card.WIDTH, Card.HEIGHT, 10, 10);
+      g.drawRect(xLoc, yLoc, Card.WIDTH, Card.HEIGHT);
       return;
     }
     
@@ -114,13 +88,9 @@ public class Pile {
         pile.get(i).draw(g);
       }
     }
-    
   }
-  
-  /**
-   * Adds a card to the pile and sets its location appropriately
-   * @param c the card to add
-   */
+
+  // Adds a card to the pile and sets its location appropriately
   public void addToPile(Card c) {
     if (c != null) pile.add(c);
     if (type != FOUNDATION_PILE && type != STOCKPILE) {
@@ -133,43 +103,28 @@ public class Pile {
       updateTop3();
     }
   }
-  
-  /**
-   * Adds a pile to the pile and sets its location appropriately
-   * TODO: this might need to work for TEMP_PILE's as well but we'll see
-   * @param p the pile to add
-   */
+
+  // Adds a pile to the pile and sets its location appropriately
   public void addToPile(Pile p) {
     if (this.type == TABLEAU_PILE) {
       for (int i = 0; i < p.size(); i++) {
         this.addToPile(p.getCardAt(i));
       }
     }
-    
   }
-  
-  /**
-   * @return the card at index i or null if i is out of bounds
-   */
+
+  // Returns the card at index i or null if i is out of bounds
   public Card getCardAt(int i) {
     return withinBounds(i) ? pile.get(i) : null;
   }
-  
-  /**
-   * Returns whether i is a valid index of the pile
-   * @param i the index to check
-   * @return whether i is a valid index of the pile
-   */
+
+  // Returns whether i is a valid index of the pile
   private boolean withinBounds(int i) {
     return (i >= 0 && i < pile.size());
   }
-  
-  /**
-   * Returns the pile that has been clicked, if any. If only one card has been clicked, the pile
-   * will simply contain a single card
-   * @param e the mouse event to check
-   * @return the pile that was clicked or null if the pile was not clicked
-   */
+
+  // Returns the pile that has been clicked, if any. If only one card has been clicked, the pile
+  // will simply contain a single card
   public Pile pileHasBeenClicked(MouseEvent e) {
     if (type == STOCKPILE) {
       Card c = this.getCardOnTop();
@@ -178,16 +133,15 @@ public class Pile {
             (e.getY() >= c.getY() && e.getY() <= c.getY() + Card.HEIGHT))
           return this.getPileAt(this.size() - 1);
       }
-      
       return null;
     }
     // no point in checking the y coordinates if the x isn't right
     if (e.getX() < this.xLoc || e.getX() > this.xLoc + this.width)
       return null;
     
-    if (this.size() == 0 && (e.getY() >= this.yLoc && e.getY() <= this.yLoc + this.height))
+    if (this.size() == 0 && (e.getY() >= this.yLoc && e.getY() <= this.yLoc + this.height)) {
       return this;
-    
+    }
     for (int i = 0; i < this.size() - 1; i++) {
       Card c = this.getCardAt(i);
       if (e.getY() >= c.getY() && e.getY() <= c.getY() + VERT_DISPL && !c.faceDown) {
@@ -200,81 +154,61 @@ public class Pile {
       if (e.getY() >= c.getY() && e.getY() <= c.getBottomY() && !c.faceDown)
         return this.getPileAt(this.size() - 1);
     }
-    
-    
     return null;
   }
   
-  /**
-   * Returns a pile of cards from the passed in index to the end of this pile
-   * @param i the index to start at
-   * @return a pile of cards from the index i to the end of this pile
-   */
+
+   // Returns a pile of cards from the passed in index to the end of this pile
+   // @param i the index to start at
+   // @return a pile of cards from the index i to the end of this pile
+
   public Pile getPileAt(int i) {
     Pile p = new Pile(this.getCardAt(i).getX(), this.getCardAt(i).getY(), TEMP_PILE);
     while (i < this.size()) {
       p.addToPile(this.getCardAt(i));
       this.removeCardAt(i);
     }
-    
     return p;
   }
   
-  /**
-   * Removes the card at index i from the deck or does nothing if the index is out of bounds
-   * @param i the index to remove
-   */
+
+  // Removes the card at index i from the deck or does nothing if the index is out of bounds
   public void removeCardAt(int i) {
     if (withinBounds(i))
       pile.remove(i);
   }
-  
-  /**
-   * Removes c from the pile
-   * @param c the card to remove
-   */
+
+  // Removes c from the pile
   public void removeCard(Card c) {
     if (c != null)
       pile.remove(c);
   }
-  
-  /**
-   * Determines if the passed in card is on top of the pile (it's the most recent addition to the pile)
-   * @param c the card to check
-   * @return whether the card is on top of its pile
-   */
+
+  // Determines if the passed in card is on top of the pile (it's the most recent addition to the pile)
   public boolean isOnTop(Card c) {
-    if (withinBounds(pile.indexOf(c)))
+    if (withinBounds(pile.indexOf(c))) {
       return (pile.indexOf(c) == pile.size() - 1);
-    
+    }
     return false;
   }
-  
-  /**
-   * @return the card on top of the pile or null if there are no cards in the pile
-   */
+
+  // returns the card on top of the pile or null if there are no cards in the pile
   public Card getCardOnTop() {
     if (pile.size() > 0)
       return pile.get(pile.size() - 1);
     
     return null;
   }
-  
-  /**
-   * @return the card at the first position of the pile
-   */
+
+  // returns the card at the first position of the pile
   public Card getCardOnBottom() {
-    if (pile.size() > 0)
+    if (pile.size() > 0) {
       return pile.get(0);
-    
+    }
     return null;
   }
-  
-  /**
-   * Returns whether a card has been dropped on the pile
-   * @param c the card to check
-   * @return whether the card has been dropped on the pile
-   */
+
+  // Returns whether a card has been dropped on the pile
   public boolean droppedOnPile(Card c) {
     // this checks to see if any of the cards corners is on a pile
     return (((c.getX() >= xLoc && c.getX() <= xLoc + width)           && (c.getY() >= yLoc && c.getY() <= yLoc + height))             ||
@@ -282,73 +216,49 @@ public class Pile {
             ((c.getX() >= xLoc && c.getX() <= xLoc + width)           && (c.getBottomY() >= yLoc && c.getBottomY() <= yLoc + height)) ||
             ((c.getRightX() >= xLoc && c.getRightX() <= xLoc + width) && (c.getBottomY() >= yLoc && c.getBottomY() <= yLoc + height)));
   }
-  
-  /**
-   * Returns whether a pile has been dropped on this pile
-   * @param p the pile to check
-   * @return whether p has been dropped on this pile
-   */
+
+  // Returns whether a pile has been dropped on this pile
   public boolean droppedOnPile(Pile p) {
     if (p.size() > 0) {
       // because dropping a pile is really like dropping the bottom card on that pile
       return droppedOnPile(p.getCardAt(0));
     }
-    
     return false;
   }
-  
-  /**
-   * @return the size of the pile
-   */
+
+  // returns the size of the pile
   public int size() {
     return pile.size();
   }
-  
-  /**
-   * @return the pile type: either FOUNDATION_PILE or TABLEAU_PILE
-   */
+
+  // returns the pile type: either FOUNDATION_PILE or TABLEAU_PILE
   public int getType() {
     // should be impossible for type to be anything except SUIT, MAIN, TEMP, or DECK but just in case...
     return isValidPile(type) ? type : TEMP_PILE;
   }
-  
-  /**
-   * Sets the type to either MAIN, SUIT, or TEMP. If t is not any of these, it is set to TEMP
-   * @param t the new type
-   */
+
+  // Sets the type to either MAIN, SUIT, or TEMP. If t is not any of these, it is set to TEMP
   public void setType(int t) {
     type = isValidPile(t) ? t : TEMP_PILE;
   }
-  
-  /**
-   * Returns whether the value t is a valid pile: either MAIN, SUIT, TEMP, or DECK
-   * @param t
-   * @return
-   */
+
+  // Returns whether the value t is a valid pile: either MAIN, SUIT, TEMP, or DECK
   public boolean isValidPile(int t) {
     return (t == TABLEAU_PILE || t == FOUNDATION_PILE || t == TEMP_PILE || t == STOCKPILE);
   }
-  
-  /**
-   * @return the x location of the pile
-   */
+
+  // returns the x location of the pile
   public int getX() {
     return xLoc;
   }
-  
-  /**
-   * @return the y location of the pile
-   */
+
+  // returns the y location of the pile
   public int getY() {
     return yLoc;
   }
-  
-  /**
-   * Moves a TEMP_PILE. The method simply does nothing if the pile is not a TEMP_PILE.
-   * It also moves the x and y location of every card in the pile
-   * @param x the new x location of the pile
-   * @param y the new y location of the pile
-   */
+
+  // Moves a TEMP_PILE. The method simply does nothing if the pile is not a TEMP_PILE.
+  // It also moves the x and y location of every card in the pile
   public void setLocation(int x, int y) {
     if (type == TEMP_PILE) {
       xLoc = x;
@@ -360,34 +270,27 @@ public class Pile {
       }
     }
   }
-  
-  /**
-   * @return whether a pile is empty (size == 0) or not
-   */
+
+  // returns whether a pile is empty (size == 0) or not
   public boolean isEmpty() {
     return this.size() == 0;
   }
-  
-  /**
-   * Turns the top card of the pile up, or does nothing if the size is 0 
-   */
+
+  // Turns the top card of the pile up, or does nothing if the size is 0
   public void turnTopCardUp() {
-    if (this.size() > 0)
+    if (this.size() > 0) {
       this.getCardOnTop().faceDown = false;
+    }
   }
-  
-  /**
-   * Turns all cards in the pile face up
-   */
+
+  // Turns all cards in the pile face up
   public void turnAllCardsUp() {
     for (int i = 0; i < size(); i++) {
       pile.get(i).faceDown = false;
     }
   }
-  
-  /**
-   * Updates the top 3 cards in the deck pile and adjusts their location
-   */
+
+  // Updates the top 3 cards in the deck pile and adjusts their location
   public void updateTop3() {
     if (type == STOCKPILE) {
       // first clear the top 3
@@ -402,7 +305,7 @@ public class Pile {
       } else {
         for (int i = 0; i < this.size(); i++) {
           top3[i] = this.getCardAt(i);
-          top3[i].setLocation(xLoc + (i * HORI_DISPL), yLoc);
+          top3[i].setLocation(xLoc + (i *  HORI_DISPL), yLoc);
         }
       }
     }
