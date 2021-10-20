@@ -31,7 +31,7 @@ For this project you will be implementing a Solitaire game.
     vii.	The talon pile must be clearly outlined and functional  
     viii.	Clicking/tapping a card will auto-stack it if an appropriate spot is available  
     
-  b.	Logic:
+  b.	Logic:  
     ~~i.	Rank of cards must be functional as outlined by the rules [x]~~  
     ~~ii.	A full deck of cards that can be shuffled must be implemented. [x]~~  
     ~~iii.	As cards are sorted into their piles, they must be subtracted from the full deck of cards. [x]~~  
