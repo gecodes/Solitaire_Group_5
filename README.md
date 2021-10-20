@@ -3,16 +3,18 @@
 This ongoing school project is based off of https://github.com/jakewilson/solitaire. Modifications have been made to add functionality requisitioned in the project outline.
 
 ## Dev Team
-
+```
 Colin Ash
 Graham Everitt
 Babar Iqbal
 Michele Labate
 Colby Pryor
 Philippe Talbot
+```
 
 ## Project Requirements
 
+```
 Priority requirements are marked with [x].
 
 For this project you will be implementing a Solitaire game. 
@@ -50,4 +52,4 @@ For this project you will be implementing a Solitaire game.
     i.	A working scoring system
     ii.	Current score must be displayed and accurate
     iii.	Vegas rules should be available as additional game mode.
-
+```
