@@ -66,7 +66,12 @@ public class Pile {
     else
       type = t;
     // the top 3 are only used by STOCKPILE's
-    top3 = (type == STOCKPILE) ? new Card[3] : null;
+
+//  for flip 1 ---------------------------------------------------------------------------------------------------------
+    top3 = (type == STOCKPILE) ? new Card[1] : null;
+//  for flip 3 ---------------------------------------------------------------------------------------------------------
+//    top3 = (type == STOCKPILE) ? new Card[3] : null;
+//  --------------------------------------------------------------------------------------------------------------------
   }
 
   // Draws the pile of cards
@@ -296,9 +301,24 @@ public class Pile {
       // first clear the top 3
       for (int i = 0; i < top3.length; i++)
         top3[i] = null;
-      
-      if (this.size() >= 3) {
-        for (int i = this.size() - 3, j = 0; i < this.size(); i++, j++) {
+
+//      This section is for 3 cards ------------------------------------------------------------------------------------
+//      if (this.size() >= 3) {
+//        for (int i = this.size() - 3, j = 0; i < this.size(); i++, j++) {
+//          top3[j] = this.getCardAt(i);
+//          top3[j].setLocation(xLoc + (j * HORI_DISPL), yLoc);
+//        }
+//      } else {
+//        for (int i = 0; i < this.size(); i++) {
+//          top3[i] = this.getCardAt(i);
+//          top3[i].setLocation(xLoc + (i *  HORI_DISPL), yLoc);
+//        }
+//      }
+//      ----------------------------------------------------------------------------------------------------------------
+
+//    This section is for 1 card ---------------------------------------------------------------------------------------
+      if (this.size() >= 1) {
+        for (int i = this.size() - 1, j = 0; i < this.size(); i++, j++) {
           top3[j] = this.getCardAt(i);
           top3[j].setLocation(xLoc + (j * HORI_DISPL), yLoc);
         }
@@ -308,6 +328,8 @@ public class Pile {
           top3[i].setLocation(xLoc + (i *  HORI_DISPL), yLoc);
         }
       }
+//    ------------------------------------------------------------------------------------------------------------------
+
     }
   }
 

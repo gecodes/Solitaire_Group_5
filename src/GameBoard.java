@@ -50,6 +50,7 @@ public class GameBoard extends JPanel {
   
   private Pile[] tableauPiles, foundationPiles;
   private Pile   stockpile;
+  private JTextArea scoreBoard;
   
   /**
    * The selected Pile is always drawn last (so it is on top of everything else)
@@ -61,12 +62,15 @@ public class GameBoard extends JPanel {
    */
   public GameBoard() {
     setBackground(new Color(36, 105, 41));
-    deck         = new Deck();
-    tableauPiles    = new Pile[7];
-    foundationPiles    = new Pile[4];
+    deck = new Deck();
+    tableauPiles = new Pile[7];
+    foundationPiles = new Pile[4];
     setInitialLayout(deck);
-    stockpile     = new Pile(deck.getX() + Card.WIDTH + GameBoard.HORI_DISPL, deck.getY(), Pile.STOCKPILE);
+    stockpile = new Pile(deck.getX() + Card.WIDTH + GameBoard.HORI_DISPL, deck.getY(), Pile.STOCKPILE);
     selectedPile = null;
+    //===========================================================
+    scoreBoard = new JTextArea();
+    //===========================================================
     CardListener listener = new CardListener(this);
     this.addMouseListener(listener);
     this.addMouseMotionListener(listener);

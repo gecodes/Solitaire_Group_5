@@ -47,7 +47,7 @@ public class Card {
       // TODO: quit the game here somehow
     }
     faceDown = true;
-    font = new Font("Courier New", Font.BOLD, 20);
+    font = new Font("Helvetica", Font.BOLD, 20);
   }
   
   // Graphically define the card, front and back

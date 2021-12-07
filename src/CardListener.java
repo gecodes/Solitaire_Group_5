@@ -26,7 +26,7 @@ public class CardListener extends MouseInputAdapter {
    * @param board the game board in which to manipulate when the user clicks/drags/drops cards
    */
   public CardListener(GameBoard board) {
-    this.board   = board;
+    this.board = board;
     deck = board.getDeck();
     tableauPiles = board.getTableauPiles();
     foundationPiles = board.getFoundationPiles();
@@ -38,7 +38,7 @@ public class CardListener extends MouseInputAdapter {
   
   @Override
   public void mouseClicked(MouseEvent e) {
-    
+
   }
   
   @Override
@@ -55,13 +55,24 @@ public class CardListener extends MouseInputAdapter {
         if (deck.size() == 0) {
           deck.addToDeck(stockpile);
         } else {
-          for (int i = 0; i < 3; i++) {
+//        for 1 flip ---------------------------------------------------------------------------------------------------
+          for (int i = 0; i < 1; i++) {
             Card c = deck.getCardOnTop();
             if (c != null) {
               stockpile.addToPile(c);
               deck.removeCardOnTop();
             }
           }
+//        --------------------------------------------------------------------------------------------------------------
+//        for 3 card flip ----------------------------------------------------------------------------------------------
+//          for (int i = 0; i < 3; i++) {
+//            Card c = deck.getCardOnTop();
+//            if (c != null) {
+//              stockpile.addToPile(c);
+//              deck.removeCardOnTop();
+//            }
+//          }
+//        --------------------------------------------------------------------------------------------------------------
           stockpile.turnAllCardsUp();
         }
       }
@@ -173,7 +184,7 @@ public class CardListener extends MouseInputAdapter {
    */
   private Pile getPileClicked(MouseEvent e) {
     Pile clicked = null;
-    origPile     = null;
+    origPile = null;
     // check the tableau piles and then the foundation piles
     for (int i = 0; i < tableauPiles.length; i++) {
       if ((clicked = tableauPiles[i].pileHasBeenClicked(e)) != null) {
