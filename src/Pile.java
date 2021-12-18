@@ -299,7 +299,6 @@ public class Pile {
       for (int i = 0; i < top3.length; i++)
         top3[i] = null;
 
-//      This section is for 3 cards ------------------------------------------------------------------------------------
       if (this.size() >= 3) {
         for (int i = this.size() - 3, j = 0; i < this.size(); i++, j++) {
           top3[j] = this.getCardAt(i);
@@ -311,22 +310,6 @@ public class Pile {
           top3[i].setLocation(xLoc + (i *  HORI_DISPL), yLoc);
         }
       }
-//      ----------------------------------------------------------------------------------------------------------------
-
-//    This section is for 1 card ---------------------------------------------------------------------------------------
-//      if (this.size() >= 1) {
-//        for (int i = this.size() - 1, j = 0; i < this.size(); i++, j++) {
-//          top3[j] = this.getCardAt(i);
-//          top3[j].setLocation(xLoc + (j * HORI_DISPL), yLoc);
-//        }
-//      } else {
-//        for (int i = 0; i < this.size(); i++) {
-//          top3[i] = this.getCardAt(i);
-//          top3[i].setLocation(xLoc + (i *  HORI_DISPL), yLoc);
-//        }
-//      }
-//    ------------------------------------------------------------------------------------------------------------------
-
     }
   }
 
