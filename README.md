@@ -2,16 +2,6 @@
 
 This ongoing school project is based off of https://github.com/jakewilson/solitaire. Modifications have been made to add functionality requisitioned in the project outline.
 
-## Dev Team
-
-Colin Ash  
-Graham Everitt  
-Babar Iqbal  
-Michele Labate  
-Colby Pryor  
-Philippe Talbot  
-
-
 ## Project Requirements
 
 Priority requirements are marked with [x].  
@@ -28,7 +18,7 @@ For this project you will be implementing a Solitaire game.
     ~~iv.	The Tableau must be displayed and functional~~  
     ~~v.	Foundations are clearly outlined and functional~~  
     ~~vi.	The stockpile must be displayed and functional~~  
-    vii.	The talon pile must be clearly outlined and functional  
+    ~~vii.	The talon pile must be clearly outlined and functional~~  
     viii.	Clicking/tapping a card will auto-stack it if an appropriate spot is available  
     
   b.	Logic:  
@@ -45,7 +35,7 @@ For this project you will be implementing a Solitaire game.
     ~~xi.	Stockpile must only contain cards that have not already been dealt~~  
     ~~xii.	Talon pile must maintain order in which stockpile cards were discarded~~  
     ~~xiii.	Stockpile must maintain order set by talon pile when re-stocking.~~  
-    xiv.	User must be able to start a new game, thus receiving a freshly shuffled deck of cards  
+    ~~xiv.	User must be able to start a new game, thus receiving a freshly shuffled deck of cards~~  
       
   c.	Additional requirements:  
     i.	A working scoring system  
