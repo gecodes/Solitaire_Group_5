@@ -16,15 +16,10 @@ public class Handler {
   
   private static final int FRAME_WIDTH  = 700;
   private static final int FRAME_HEIGHT = 600;
-  private static final int REGULAR_MODE = 1;
-  private static final int VEGAS_MODE = 2;
-  private static final int DRAW_3_MODE = 3;
-
-
   
   public static void main(String[] args) {
     loadGame();
-    runGame();
+//    runGame();
   }
   
   /**
@@ -36,9 +31,12 @@ public class Handler {
 //    while (true) {
 //    }
   }
-  public static void reloadGame() {
-
-    gameFrame.dispose();
+  public static void reloadGame(int mode) {
+    gameFrame.remove(gamePanel);
+    gamePanel = new GameBoard();
+    gamePanel.setMode(mode);
+    gameFrame.add(gamePanel);
+    gameFrame.revalidate();
   }
   
   /**

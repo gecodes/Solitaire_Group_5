@@ -53,25 +53,32 @@ public class CardListener extends MouseInputAdapter {
     } else { // if no pile was clicked, check if the deck was
       if (deck.hasBeenClicked(e)) {
         if (deck.size() == 0) {
-          deck.addToDeck(stockpile);
+//          CONDITIONAL BASED ON GAME MODE -------------------------------------------------------------------------------------------
+          if (board.getMode() == 2) {
+            System.out.println("GAME OVER");
+          } else {
+            deck.addToDeck(stockpile);
+          }
+//          ------------------------------------------------------------------------------------------------------------
         } else {
-//        for 1 flip ---------------------------------------------------------------------------------------------------
-          for (int i = 0; i < 1; i++) {
+//        for 3 card flip use this block -------------------------------------------------------------------------------
+          if (board.getMode() == 3) {
+            for (int i = 0; i < 3; i++) {
+              Card c = deck.getCardOnTop();
+              if (c != null) {
+                stockpile.addToPile(c);
+                deck.removeCardOnTop();
+              }
+            }
+          } else {
+//        --------------------------------------------------------------------------------------------------------------
+//        for 1 flip use this block ------------------------------------------------------------------------------------
             Card c = deck.getCardOnTop();
             if (c != null) {
               stockpile.addToPile(c);
               deck.removeCardOnTop();
             }
           }
-//        --------------------------------------------------------------------------------------------------------------
-//        for 3 card flip ----------------------------------------------------------------------------------------------
-//          for (int i = 0; i < 3; i++) {
-//            Card c = deck.getCardOnTop();
-//            if (c != null) {
-//              stockpile.addToPile(c);
-//              deck.removeCardOnTop();
-//            }
-//          }
 //        --------------------------------------------------------------------------------------------------------------
           stockpile.turnAllCardsUp();
         }
@@ -166,7 +173,7 @@ public class CardListener extends MouseInputAdapter {
         }
       }
     }
-    
+    stockpile.updateTop3();
     board.selectedPile = null;
     origPile = null;
     board.repaint();

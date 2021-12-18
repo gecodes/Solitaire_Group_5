@@ -61,17 +61,13 @@ public class Pile {
     yLoc   = y;
     width  = Card.WIDTH;
     height = Card.HEIGHT;
-    if (t != FOUNDATION_PILE && t != TABLEAU_PILE && t != STOCKPILE)
+    if (t != FOUNDATION_PILE && t != TABLEAU_PILE && t != STOCKPILE) {
       type = TEMP_PILE;
-    else
+    } else {
       type = t;
+    }
     // the top 3 are only used by STOCKPILE's
-
-//  for flip 1 ---------------------------------------------------------------------------------------------------------
-    top3 = (type == STOCKPILE) ? new Card[1] : null;
-//  for flip 3 ---------------------------------------------------------------------------------------------------------
-//    top3 = (type == STOCKPILE) ? new Card[3] : null;
-//  --------------------------------------------------------------------------------------------------------------------
+    top3 = (type == STOCKPILE) ? new Card[3] : null;
   }
 
   // Draws the pile of cards
@@ -179,8 +175,9 @@ public class Pile {
 
   // Removes the card at index i from the deck or does nothing if the index is out of bounds
   public void removeCardAt(int i) {
-    if (withinBounds(i))
+    if (withinBounds(i)) {
       pile.remove(i);
+    }
   }
 
   // Removes c from the pile
@@ -303,22 +300,8 @@ public class Pile {
         top3[i] = null;
 
 //      This section is for 3 cards ------------------------------------------------------------------------------------
-//      if (this.size() >= 3) {
-//        for (int i = this.size() - 3, j = 0; i < this.size(); i++, j++) {
-//          top3[j] = this.getCardAt(i);
-//          top3[j].setLocation(xLoc + (j * HORI_DISPL), yLoc);
-//        }
-//      } else {
-//        for (int i = 0; i < this.size(); i++) {
-//          top3[i] = this.getCardAt(i);
-//          top3[i].setLocation(xLoc + (i *  HORI_DISPL), yLoc);
-//        }
-//      }
-//      ----------------------------------------------------------------------------------------------------------------
-
-//    This section is for 1 card ---------------------------------------------------------------------------------------
-      if (this.size() >= 1) {
-        for (int i = this.size() - 1, j = 0; i < this.size(); i++, j++) {
+      if (this.size() >= 3) {
+        for (int i = this.size() - 3, j = 0; i < this.size(); i++, j++) {
           top3[j] = this.getCardAt(i);
           top3[j].setLocation(xLoc + (j * HORI_DISPL), yLoc);
         }
@@ -328,6 +311,20 @@ public class Pile {
           top3[i].setLocation(xLoc + (i *  HORI_DISPL), yLoc);
         }
       }
+//      ----------------------------------------------------------------------------------------------------------------
+
+//    This section is for 1 card ---------------------------------------------------------------------------------------
+//      if (this.size() >= 1) {
+//        for (int i = this.size() - 1, j = 0; i < this.size(); i++, j++) {
+//          top3[j] = this.getCardAt(i);
+//          top3[j].setLocation(xLoc + (j * HORI_DISPL), yLoc);
+//        }
+//      } else {
+//        for (int i = 0; i < this.size(); i++) {
+//          top3[i] = this.getCardAt(i);
+//          top3[i].setLocation(xLoc + (i *  HORI_DISPL), yLoc);
+//        }
+//      }
 //    ------------------------------------------------------------------------------------------------------------------
 
     }
