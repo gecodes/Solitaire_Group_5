@@ -38,7 +38,7 @@ For this project you will be implementing a Solitaire game.
     ~~xiv.	User must be able to start a new game, thus receiving a freshly shuffled deck of cards~~  
       
   c.	Additional requirements:  
-    i.	A working scoring system  
-    ii.	Current score must be displayed and accurate  
-    iii.	Vegas rules should be available as additional game mode.  
+    ~~i.	A working scoring system~~  
+    ~~ii.	Current score must be displayed and accurate~~  
+    ~~iii.	Vegas rules should be available as additional game mode.~~  
 
