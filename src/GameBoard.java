@@ -13,10 +13,7 @@ import java.awt.*;
 public class GameBoard extends JPanel {
   
   private Deck deck;
-
-  private final int REGULAR_MODE = 1;
-  private final int VEGAS_MODE = 2;
-  private final int DRAW3_MODE = 3;
+  private CardListener listener;
   
   /**
    * Horizontal displacement between rows of cards
@@ -32,7 +29,8 @@ public class GameBoard extends JPanel {
                                                 (HORI_DISPL*4) + (Card.WIDTH * 3),
                                                 (HORI_DISPL*5) + (Card.WIDTH * 4),
                                                 (HORI_DISPL*6) + (Card.WIDTH * 5),
-                                                (HORI_DISPL*7) + (Card.WIDTH * 6)};
+                                                (HORI_DISPL*7) + (Card.WIDTH * 6)
+  };
   
   /**
    * The y location of each main pile
@@ -46,7 +44,7 @@ public class GameBoard extends JPanel {
                                                 TABLEAU_PILE_X_LOCS[4],
                                                 TABLEAU_PILE_X_LOCS[5],
                                                 TABLEAU_PILE_X_LOCS[6]};
-  
+
   /**
    * Y locations of each suit pile
    */
@@ -54,8 +52,8 @@ public class GameBoard extends JPanel {
   
   private Pile[] tableauPiles, foundationPiles;
   private Pile   stockpile;
-  private int mode;
-//  private JTextArea scoreBoard;
+  private int mode = 1;
+  private ScoreBoard scoreBoard;
   
   /**
    * The selected Pile is always drawn last (so it is on top of everything else)
@@ -68,16 +66,35 @@ public class GameBoard extends JPanel {
   public GameBoard() {
     setBackground(new Color(36, 105, 41));
     deck = new Deck();
-    mode = REGULAR_MODE;
     tableauPiles = new Pile[7];
     foundationPiles = new Pile[4];
+    scoreBoard = new ScoreBoard();
     setInitialLayout(deck);
     stockpile = new Pile(deck.getX() + Card.WIDTH + GameBoard.HORI_DISPL, deck.getY(), Pile.STOCKPILE);
     selectedPile = null;
-    //===========================================================
-//    scoreBoard = new JTextArea();
-    //===========================================================
-    CardListener listener = new CardListener(this);
+    listener = new CardListener(this);
+    this.addMouseListener(listener);
+    this.addMouseMotionListener(listener);
+    this.setFocusable(true);
+  }
+  public GameBoard(int mode) {
+    setBackground(new Color(36, 105, 41));
+    deck = new Deck();
+    this.mode = mode;
+    tableauPiles = new Pile[7];
+    foundationPiles = new Pile[4];
+    scoreBoard = new ScoreBoard();
+    if (mode == 2) {
+      scoreBoard.setScore(-52);
+      scoreBoard.updateVegasLabel();
+    } else {
+      scoreBoard.setScore(0);
+      scoreBoard.updateLabel();
+    }
+    setInitialLayout(deck);
+    stockpile = new Pile(deck.getX() + Card.WIDTH + GameBoard.HORI_DISPL, deck.getY(), Pile.STOCKPILE);
+    selectedPile = null;
+    listener = new CardListener(this);
     this.addMouseListener(listener);
     this.addMouseMotionListener(listener);
     this.setFocusable(true);
@@ -155,5 +172,17 @@ public class GameBoard extends JPanel {
 
   public void setMode(int mode) {
     this.mode = mode;
+  }
+
+  public ScoreBoard getScoreBoard() {
+    return scoreBoard;
+  }
+
+  public void setScoreBoard(ScoreBoard scoreBoard) {
+    this.scoreBoard = scoreBoard;
+  }
+
+  public CardListener getListener() {
+    return listener;
   }
 }

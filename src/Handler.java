@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Handler.java
@@ -11,11 +12,14 @@ import javax.swing.*;
 public class Handler {
   
   private static JFrame gameFrame;
+  private static JPanel formatPanel;
   private static GameBoard gamePanel;
+  private static ScoreBoard scoreBoard;
   private static Menu gameMenu;
+
   
-  private static final int FRAME_WIDTH  = 700;
-  private static final int FRAME_HEIGHT = 600;
+  private static final int FRAME_WIDTH  = 725;
+  private static final int FRAME_HEIGHT = 750;
   
   public static void main(String[] args) {
     loadGame();
@@ -32,11 +36,13 @@ public class Handler {
 //    }
   }
   public static void reloadGame(int mode) {
-    gameFrame.remove(gamePanel);
-    gamePanel = new GameBoard();
-    gamePanel.setMode(mode);
-    gameFrame.add(gamePanel);
-    gameFrame.revalidate();
+    formatPanel.remove(gamePanel);
+    formatPanel.remove(scoreBoard);
+    gamePanel = new GameBoard(mode);
+    scoreBoard = gamePanel.getScoreBoard();
+    formatPanel.add(gamePanel);
+    formatPanel.add(scoreBoard, BorderLayout.SOUTH);
+    formatPanel.revalidate();
   }
   
   /**
@@ -44,16 +50,21 @@ public class Handler {
    */
   public static void loadGame() {
     gameFrame = new JFrame("Solitaire");
+
+    formatPanel = new JPanel();
     gamePanel = new GameBoard();
+    scoreBoard = gamePanel.getScoreBoard();
     gameMenu = new Menu();
-    // set options here
-    // maybe some ifs with option type
+
     gameFrame.setJMenuBar(gameMenu.createMenu());
     gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     gameFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-    gameFrame.setLocationRelativeTo(null);
-    gameFrame.add(gamePanel);
-    gameFrame.setVisible(true);
-  }
 
+    formatPanel.setLayout(new BorderLayout());
+    formatPanel.add(gamePanel);
+    formatPanel.add(scoreBoard, BorderLayout.SOUTH);
+    gameFrame.add(formatPanel);
+    gameFrame.setVisible(true);
+    gameFrame.setResizable(false);
+  }
 }

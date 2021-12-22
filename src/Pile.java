@@ -202,6 +202,14 @@ public class Pile {
     return null;
   }
 
+  public Card getSecondFromTop() {
+    if (pile.size() > 1) {
+      return pile.get(pile.size() - 1);
+    } else {
+      return null;
+    }
+  }
+
   // returns the card at the first position of the pile
   public Card getCardOnBottom() {
     if (pile.size() > 0) {
@@ -284,6 +292,13 @@ public class Pile {
       this.getCardOnTop().faceDown = false;
     }
   }
+
+//  public boolean hasTopCardTurned() {
+//    if (this.size() == 0) {
+//      return false;
+//    }
+//    return true;
+//  }
 
   // Turns all cards in the pile face up
   public void turnAllCardsUp() {

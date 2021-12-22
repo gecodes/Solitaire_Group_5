@@ -9,13 +9,17 @@ import java.awt.event.MouseEvent;
  * @version Mar 18, 2014
  */
 public class CardListener extends MouseInputAdapter {
-  
+  //=====================================================================
+  private int score;
+  private int mode;
+  //=====================================================================
   private GameBoard board;
   
   private Deck deck;
   
   private Pile[] tableauPiles, foundationPiles;
   private Pile   stockpile; // the pile of the cards the user has drawn from the deck
+  private ScoreBoard scoreboard;
   
   private Pile origPile;
   
@@ -27,6 +31,8 @@ public class CardListener extends MouseInputAdapter {
    */
   public CardListener(GameBoard board) {
     this.board = board;
+    this.scoreboard = board.getScoreBoard();
+    this.mode = board.getMode();
     deck = board.getDeck();
     tableauPiles = board.getTableauPiles();
     foundationPiles = board.getFoundationPiles();
@@ -34,11 +40,34 @@ public class CardListener extends MouseInputAdapter {
     lastX = 0;
     lastY = 0;
     origPile = null;
+    this.score = scoreboard.getScore();
   }
   
   @Override
   public void mouseClicked(MouseEvent e) {
-
+//    if (e.getClickCount() == 2 && !e.isConsumed()) {
+//      e.consume();
+//      Pile p = board.selectedPile;
+//      if (Card.getSuitIndex(p.getCardOnBottom().getSuit()) == Card.getSuitIndex(foundationPiles[i].getCardOnTop().getSuit())) {
+//        // the faces must be in ascending order
+//        if (Card.getFaceIndex(p.getCardOnBottom().getFace()) == Card.getFaceIndex(foundationPiles[i].getCardOnTop().getFace()) + 1) {
+//          foundationPiles[i].addToPile(p.getCardOnBottom());
+//          origPile.turnTopCardUp();
+//          validDrop = true;
+//        }
+//      }
+//    }
+//    stockpile.updateTop3();
+//    board.selectedPile = null;
+//    origPile = null;
+//    // Check for victory
+//    if (foundationPiles[0].size() == 13
+//            && foundationPiles[1].size() == 13
+//            && foundationPiles[2].size() == 13
+//            && foundationPiles[3].size() == 13) {
+//      System.out.println("YOU WIN"); // <-----------------------------------VICTORY!!!
+//    }
+//    board.repaint();
   }
   
   @Override
@@ -55,7 +84,7 @@ public class CardListener extends MouseInputAdapter {
         if (deck.size() == 0) {
           // Deck cycle does not continue if playing with Vegas rules.
           if (board.getMode() == 2) {
-            System.out.println("GAME OVER");
+            scoreboard.updateVegasFinalLabel();
           } else {
             deck.addToDeck(stockpile);
           }
@@ -112,6 +141,14 @@ public class CardListener extends MouseInputAdapter {
           if (tableauPiles[i].isEmpty()) {
             if (p.getCardOnBottom().getFace().equals("K")) {
               tableauPiles[i].addToPile(p);
+              // This handles 5 points for a king onto an empty tableau from stockpile
+              if (mode != 2) {
+                if (origPile == stockpile) {
+                  score += 5;
+                  scoreboard.setScore(score);
+                  scoreboard.updateLabel();
+                }
+              }
               origPile.turnTopCardUp();
               validDrop = true;
             }
@@ -121,6 +158,28 @@ public class CardListener extends MouseInputAdapter {
               // now ensure the faces are descending
               if (Card.getFaceIndex(p.getCardOnBottom().getFace()) + 1 == Card.getFaceIndex(tableauPiles[i].getCardOnTop().getFace())) {
                 tableauPiles[i].addToPile(p);
+                // This area handles 5 points for placing a non-king on tableau from the stockpile
+                // 5 points for taking from the stockpile
+                if (mode != 2) {
+                  if (origPile == stockpile) {
+                    score += 5;
+                    scoreboard.setScore(score);
+                    scoreboard.updateLabel();
+                  }
+
+                  // 5 points for flipping a tableau card
+                  if (origPile != stockpile
+                          && !origPile.isEmpty()
+                          && origPile != foundationPiles[0]
+                          && origPile != foundationPiles[1]
+                          && origPile != foundationPiles[2]
+                          && origPile != foundationPiles[3]
+                          && origPile.getCardOnTop().faceDown) {
+                    score += 5;
+                    scoreboard.setScore(score);
+                    scoreboard.updateLabel();
+                  }
+                }
                 origPile.turnTopCardUp();
                 validDrop = true;
                 break;
@@ -138,8 +197,39 @@ public class CardListener extends MouseInputAdapter {
               if (p.size() == 1) {
                 if (p.getCardOnBottom().getFace().equals("A")) {
                   foundationPiles[i].addToPile(p.getCardOnBottom());
+
+                  // 10 points for an ace to the suit pile
+                  if (origPile != foundationPiles[0]
+                          && origPile != foundationPiles[1]
+                          && origPile != foundationPiles[2]
+                          && origPile != foundationPiles[3]) {
+                    if (origPile != stockpile
+                            && !origPile.isEmpty()
+                            && origPile.getCardOnTop().faceDown) {
+                      if (mode != 2) {
+                        score += 15;
+                        scoreboard.setScore(score);
+                        scoreboard.updateLabel();
+                      } else {
+                        score += 5;
+                        scoreboard.setScore(score);
+                        scoreboard.updateVegasLabel();
+                      }
+                    } else {
+                      if (mode != 2) {
+                        score += 10;
+                        scoreboard.setScore(score);
+                        scoreboard.updateLabel();
+                      } else {
+                        score += 5;
+                        scoreboard.setScore(score);
+                        scoreboard.updateVegasLabel();
+                      }
+                    }
+                  }
                   origPile.turnTopCardUp();
                   validDrop = true;
+
                 }
               }
             } else {
@@ -149,6 +239,36 @@ public class CardListener extends MouseInputAdapter {
                   // the faces must be in ascending order
                   if (Card.getFaceIndex(p.getCardOnBottom().getFace()) == Card.getFaceIndex(foundationPiles[i].getCardOnTop().getFace()) + 1) {
                     foundationPiles[i].addToPile(p.getCardOnBottom());
+
+                    // 10 points for a non-ace to the suit pile
+                    if (origPile != foundationPiles[0]
+                            && origPile != foundationPiles[1]
+                            && origPile != foundationPiles[2]
+                            && origPile != foundationPiles[3]) {
+                      if (origPile != stockpile
+                              && !origPile.isEmpty()
+                              && origPile.getCardOnTop().faceDown) {
+                        if (mode != 2) {
+                          score += 15;
+                          scoreboard.setScore(score);
+                          scoreboard.updateLabel();
+                        } else {
+                          score += 5;
+                          scoreboard.setScore(score);
+                          scoreboard.updateVegasLabel();
+                        }
+                      } else {
+                        if (mode != 2) {
+                          score += 10;
+                          scoreboard.setScore(score);
+                          scoreboard.updateLabel();
+                        } else {
+                          score += 5;
+                          scoreboard.setScore(score);
+                          scoreboard.updateVegasLabel();
+                        }
+                      }
+                    }
                     origPile.turnTopCardUp();
                     validDrop = true;
                   }
@@ -177,7 +297,9 @@ public class CardListener extends MouseInputAdapter {
             && foundationPiles[1].size() == 13
             && foundationPiles[2].size() == 13
             && foundationPiles[3].size() == 13) {
-      System.out.println("YOU WIN"); // <-----------------------------------VICTORY!!!
+      if (mode != 2) {
+        scoreboard.updateVictoryLabel();
+      }
     }
     board.repaint();
   }

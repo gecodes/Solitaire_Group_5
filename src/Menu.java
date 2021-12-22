@@ -29,7 +29,6 @@ public class Menu implements ActionListener {
         gameTypeRegular.setSelected(true);
         gameTypeRegular.addActionListener(e -> {
             Handler.reloadGame(1);
-//            TODO: set Regular rules
         });
         gameTypeOptions.add(gameTypeRegular);
         menu.add(gameTypeRegular);
@@ -37,7 +36,6 @@ public class Menu implements ActionListener {
         gameTypeVegas = new JRadioButtonMenuItem("Vegas Rules");
         gameTypeVegas.addActionListener(e -> {
             Handler.reloadGame(2);
-//            TODO: set Vegas rules
         });
         gameTypeOptions.add(gameTypeVegas);
         menu.add(gameTypeVegas);
@@ -45,7 +43,6 @@ public class Menu implements ActionListener {
         gameTypeDraw3 = new JRadioButtonMenuItem("Draw 3 Rules");
         gameTypeDraw3.addActionListener(e -> {
             Handler.reloadGame(3);
-//            TODO: set Draw 3 rules
         });
         gameTypeOptions.add(gameTypeDraw3);
         menu.add(gameTypeDraw3);
@@ -62,7 +59,6 @@ public class Menu implements ActionListener {
             }
 
         });
-        // Return MenuBar
         return menuBar;
     }
 
@@ -70,16 +66,4 @@ public class Menu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     }
-
-//    public void setOptions();
-
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        Handler.reloadGame();
-//    }
-
-//    @Override
-//    public void itemStateChanged(ItemEvent e) {
-//        Handler.reloadGame();
-//    }
 }
